@@ -6,7 +6,6 @@ import { LeftSquareOutlined, RightSquareOutlined, FileExclamationOutlined, Clust
 import { EnvironmentOutlined, DatabaseOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import './page.css';
 const { Content, Sider } = Layout;
 
 const items2: MenuProps['items'] = [
