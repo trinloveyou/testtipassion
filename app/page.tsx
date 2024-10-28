@@ -178,25 +178,29 @@ const App: React.FC = () => {
         />
       </Sider>
       <Layout style={{ padding: '0 24px 24px' }}>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '14px 0' }}>
-          <Breadcrumb
-            items={[
-              { title: 'สมรัก ภักดี' },
-              { title: <><LogoutOutlined /></> },
-            ]}
-          />
+        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', backgroundColor: 'white' }}>
+          <div className="breadcrumb-container" style={{ display: 'flex', justifyContent: 'flex-end', margin: '14px 0' }}>
+            <Breadcrumb
+              items={[
+                { title: 'สมรัก ภักดี' },
+                { title: <><LogoutOutlined /></> },
+              ]}
+            />
+          </div>
+          <h1 style={{ fontSize: '2rem', color: 'black' }}>จัดการผู้ใช้งาน</h1>
+          <Content
+            style={{
+              padding: 24,
+              margin: 0,
+              minHeight: 280,
+              background: colorBgContainer,
+              borderRadius: borderRadiusLG,
+              backgroundColor: 'red',
+            }}
+          >
+            Content
+          </Content>
         </div>
-        <Content
-          style={{
-            padding: 24,
-            margin: 0,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-          }}
-        >
-          Content
-        </Content>
       </Layout>
     </Layout>
   );
