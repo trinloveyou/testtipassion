@@ -1,101 +1,206 @@
-import Image from "next/image";
+"use client"; // Ensure this is the first line
 
-export default function Home() {
+import React, { useState } from 'react';
+import { CopyOutlined, FileDoneOutlined, ProductOutlined, LogoutOutlined, FileMarkdownOutlined, ContainerOutlined, DashboardOutlined } from '@ant-design/icons';
+import { LeftSquareOutlined, RightSquareOutlined, FileExclamationOutlined, ClusterOutlined, DollarOutlined, FieldTimeOutlined } from '@ant-design/icons';
+import { EnvironmentOutlined, DatabaseOutlined, UserOutlined } from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import './page.css';
+const { Content, Sider } = Layout;
+
+const items2: MenuProps['items'] = [
+  {
+    key: '1',
+    icon: React.cloneElement(<ProductOutlined />, { style: { color: 'gray', fontSize: '15px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>Dashboard</span>
+  },
+  {
+    type: 'divider',
+  },
+  {
+    key: 'planning',
+    label: (
+      <span style={{ fontSize: '10px', color: '#000000', textAlign: 'left' }}>
+        Planning
+      </span>
+    ),
+    disabled: true,
+  },
+  {
+    key: '2',
+    icon: React.cloneElement(<CopyOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>แผนกลยุทธ์</span>
+  },
+  {
+    key: '3',
+    icon: React.cloneElement(<FileDoneOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>แผนปฎิบัติการ</span>
+  },
+  {
+    key: '4',
+    icon: React.cloneElement(<FileExclamationOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>แผนบริหารความเสี่ยง</span>
+  },
+  {
+    key: '5',
+    icon: React.cloneElement(<FieldTimeOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ประเด็นเร่งด่วน</span>
+  },
+  {
+    key: '6',
+    icon: React.cloneElement(<ClusterOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>จุดเน้นคณะวิชา/ส่วนงาน</span>
+  },
+  {
+    type: 'divider',
+  },
+  {
+    key: 'Budgeting',
+    label: (
+      <span style={{ fontSize: '10px', color: '#000000', textAlign: 'left' }}>
+        Budgeting
+      </span>
+    ),
+    disabled: true,
+  },
+  {
+    key: '7',
+    icon: React.cloneElement(<FileMarkdownOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ประมาณร่ายรับ</span>
+  },
+  {
+    key: '8',
+    icon: React.cloneElement(<DollarOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>การจัดทำรายจ่าย</span>
+  },
+  {
+    type: 'divider',
+  },
+  {
+    key: 'Report',
+    label: (
+      <span style={{ fontSize: '10px', color: '#000000', textAlign: 'left' }}>
+        Report
+      </span>
+    ),
+    disabled: true,
+  },
+  {
+    key: '9',
+    icon: React.cloneElement(<ContainerOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>รายงาน</span>
+  },
+  {
+    type: 'divider',
+  },
+  {
+    key: 'Tracking',
+    label: (
+      <span style={{ fontSize: '10px', color: '#000000', textAlign: 'left' }}>
+        Tracking
+      </span>
+    ),
+    disabled: true,
+  },
+  {
+    key: '10',
+    icon: React.cloneElement(<EnvironmentOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ติดตามโครงการ</span>
+  },
+  {
+    key: '11',
+    icon: React.cloneElement(<DashboardOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ติดตามตัวชี้วัด</span>
+  },
+  {
+    type: 'divider',
+  },
+  {
+    key: 'Management',
+    label: (
+      <span style={{ fontSize: '10px', color: '#000000', textAlign: 'left' }}>
+        Management
+      </span>
+    ),
+    disabled: true,
+  },
+  {
+    key: '12',
+    icon: React.cloneElement(<DatabaseOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ข้อมูลตั้งต้น</span>
+  },
+  {
+    key: '13',
+    icon: React.cloneElement(<UserOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ตัวจัดสิทธิ์และผู้ใช้งาน</span>
+  },
+];
+
+const App: React.FC = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={(value) => setCollapsed(value)}
+        trigger={null}
+        width={250}
+        style={{ background: colorBgContainer }}
+      >
+        <div style={{ padding: '10px', textAlign: 'right' }}>
+          {collapsed ? (
+            <RightSquareOutlined onClick={() => setCollapsed(false)} style={{ color: 'black', fontSize: '24px' }} />
+          ) : (
+            <LeftSquareOutlined onClick={() => setCollapsed(true)} style={{ color: 'black', fontSize: '24px' }} />
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        {!collapsed && (
+          <div style={{ textAlign: 'center', padding: '10px', marginTop: '-50px' }}>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/8/88/Silpakorn_University_Logo_02.png"
+              alt="Silpakorn University"
+              style={{ width: '100px', borderRadius: '8px', marginBottom: '10px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+            />
+          </div>
+        )}
+
+        <Menu
+          mode="inline"
+          defaultSelectedKeys={['1']}
+          style={{ height: '100%', borderRight: 0 }}
+          items={items2}
+        />
+      </Sider>
+      <Layout style={{ padding: '0 24px 24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '14px 0' }}>
+          <Breadcrumb
+            items={[
+              { title: 'สมรัก ภักดี' },
+              { title: <><LogoutOutlined /></> },
+            ]}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        </div>
+        <Content
+          style={{
+            padding: 24,
+            margin: 0,
+            minHeight: 280,
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+          }}
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          Content
+        </Content>
+      </Layout>
+    </Layout>
   );
-}
+};
+
+export default App;
