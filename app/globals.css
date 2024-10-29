@@ -32,3 +32,9 @@ p {
   padding-left: 20px;
   font-size: 17px;
 }
+
+element.style {
+  padding: 6px;
+  background: blueviolet;
+  border-radius: 6px;
+}

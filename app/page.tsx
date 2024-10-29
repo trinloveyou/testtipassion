@@ -246,7 +246,7 @@ const SecondLayout = () => {
                 size="middle"
                 type="primary"
                 htmlType="submit"
-                style={{ flex: 1, width: '120px' }}
+                style={{ flex: 1, width: '120px', backgroundColor: 'green', borderColor: 'green' }}
               >
                 ค้นหา
               </Button>
@@ -254,16 +254,11 @@ const SecondLayout = () => {
                 size="middle"
                 htmlType="button"
                 onClick={onReset}
-                style={{ flex: 1, width: '120px' }}
+                style={{ flex: 1, width: '120px', color: 'green' }}
               >
                 ล้างข้อมูล
               </Button>
             </div>
-
-
-
-
-
           </Space>
         </Form>
       </Content>
