@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { CopyOutlined, FileDoneOutlined, ProductOutlined, LogoutOutlined, FileMarkdownOutlined, ContainerOutlined, DashboardOutlined } from '@ant-design/icons';
 import { LeftSquareOutlined, RightSquareOutlined, FileExclamationOutlined, ClusterOutlined, DollarOutlined, FieldTimeOutlined } from '@ant-design/icons';
 import { EnvironmentOutlined, DatabaseOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme, Button, Form, Input, Select, Space } from 'antd';
+import { Breadcrumb, Layout, Menu, theme, Button, Form, Input, Select, Space, Tag, Table } from 'antd';
 
 const { Content, Sider } = Layout;
 const { Option } = Select;
@@ -175,7 +175,7 @@ const FirstLayout: React.FC<{ collapsed: boolean; onCollapse: (value: boolean) =
 
 const SecondLayout: React.FC = () => {
   const {
-    token: { colorBgContainer },
+    token: { },
   } = theme.useToken();
 
   const [form] = Form.useForm();
@@ -202,82 +202,7 @@ const SecondLayout: React.FC = () => {
           borderRadius: 6,
         }}
       >
-        <Form
-          form={form}
-          name="control-hooks"
-          onFinish={onFinish}
-          style={{
-            maxWidth: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-          }}
-        >
-          <Form.Item
-            name="note"
-            label="ชื่อ/นามสกุล/อีเมล"
-            rules={[{ required: true }]}
-            style={{ flex: 1, marginBottom: 0 }}
-          >
-            <Input size="middle" />
-          </Form.Item>
-
-          <Form.Item
-            name="faculty"
-            label="คณะ/หน่วยงาน"
-            rules={[{ required: true }]}
-            style={{ flex: 1, marginBottom: 0 }}
-          >
-            <Select
-              size="middle"
-              placeholder="ทั้งหมด"
-              onChange={onGenderChange}
-              allowClear
-            >
-              <Option value="BCA">BCA</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            name="status"
-            label="สถานะ"
-            rules={[{ required: true }]}
-            style={{ flex: 1, marginBottom: 0 }}
-          >
-            <Select
-              size="middle"
-              placeholder="ใช้งาน"
-              onChange={onGenderChange}
-              allowClear
-            >
-              <Option value="ดำเนินการ">ดำเนินการ</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item style={{ marginBottom: 0, marginLeft: 4 }}>
-            <Space size="small">
-              <Button size="middle" type="primary" htmlType="submit">
-                ค้นหา
-              </Button>
-              <Button size="middle" htmlType="button" onClick={onReset}>
-                ล้างข้อมูล
-              </Button>
-            </Space>
-          </Form.Item>
-        </Form>
-      </Content>
-    </Layout>
-  );
-};
-
-const App: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
-
-  return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <FirstLayout collapsed={collapsed} onCollapse={setCollapsed} />
-
-      <Layout>
+        {/* Breadcrumb and Title Section */}
         <div style={{ maxWidth: '100%', backgroundColor: 'white' }}>
           <div className="breadcrumb-container" style={{ display: 'flex', justifyContent: 'flex-end', margin: '14px 0', padding: '0 16px' }}>
             <Breadcrumb
@@ -293,10 +218,148 @@ const App: React.FC = () => {
         <h1 style={{ fontSize: '25px', color: 'black', marginLeft: '40px' }}>จัดการผู้ใช้งาน (User Management)</h1>
         <br />
 
-        <SecondLayout />
-      </Layout>
+        <Form
+          form={form}
+          name="control-hooks"
+          onFinish={onFinish}
+          style={{
+            maxWidth: '100%',
+            display: 'flex',
+            alignItems: 'flex-start',
+            padding: '0 16px',
+            marginBottom: '20px',
+          }}
+        >
+          <Form.Item
+            name="username"
+            style={{ width: '100%', marginRight: '10px' }}
+          >
+            <Input placeholder="ชื่อผู้ใช้งาน" />
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            style={{ width: '100%', marginRight: '10px' }}
+          >
+            <Input placeholder="อีเมล" />
+          </Form.Item>
+
+          <Form.Item
+            name="role"
+            style={{ width: '100%', marginRight: '10px' }}
+          >
+            <Select
+              placeholder="เลือกบทบาท"
+              onChange={onGenderChange}
+            >
+              <Option value="admin">Admin</Option>
+              <Option value="user">User</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" size="middle">
+              ค้นหา
+            </Button>
+            <Button htmlType="button" onClick={onReset} size="middle" style={{ marginLeft: '8px' }}>
+              ล้าง
+            </Button>
+          </Form.Item>
+        </Form>
+
+        {/* Table Data Section */}
+        <div style={{ marginTop: '20px' }}>
+          <Table
+            bordered
+            dataSource={[
+              {
+                key: '1',
+                name: 'John Brown',
+                email: 'john.brown@example.com',
+                role: 'User',
+                status: 'Active',
+                registrationDate: '2022-01-01',
+                actions: 'Edit/Delete'
+              },
+              {
+                key: '2',
+                name: 'Jim Green',
+                email: 'jim.green@example.com',
+                role: 'Admin',
+                status: 'Inactive',
+                registrationDate: '2021-01-01',
+                actions: 'Edit/Delete'
+              },
+              {
+                key: '3',
+                name: 'Joe Black',
+                email: 'joe.black@example.com',
+                role: 'User',
+                status: 'Active',
+                registrationDate: '2023-01-01',
+                actions: 'Edit/Delete'
+              },
+            ]}
+            columns={[
+              {
+                title: 'Name',
+                dataIndex: 'name',
+                key: 'name',
+              },
+              {
+                title: 'Email',
+                dataIndex: 'email',
+                key: 'email',
+              },
+              {
+                title: 'Role',
+                dataIndex: 'role',
+                key: 'role',
+              },
+              {
+                title: 'Status',
+                dataIndex: 'status',
+                key: 'status',
+                render: (status: string) => (
+                  <Tag color={status === 'Active' ? 'green' : 'volcano'}>
+                    {status}
+                  </Tag>
+                ),
+              },
+              {
+                title: 'Registration Date',
+                dataIndex: 'registrationDate',
+                key: 'registrationDate',
+              },
+              {
+                title: 'Actions',
+                dataIndex: 'actions',
+                key: 'actions',
+                render: () => (
+                  <Space size="middle">
+                    <a>Edit</a>
+                    <a>Delete</a>
+                  </Space>
+                ),
+              },
+            ]}
+            pagination={false}
+          />
+        </div>
+      </Content>
     </Layout>
   );
 };
 
-export default App;
+const MyLayout: React.FC = () => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <FirstLayout collapsed={collapsed} onCollapse={setCollapsed} />
+      <SecondLayout />
+    </Layout>
+  );
+};
+
+export default MyLayout;
