@@ -136,71 +136,90 @@ const items2: MenuProps['items'] = [
   },
 ];
 
-const App: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
+const FirstLayout: React.FC<{ collapsed: boolean; onCollapse: (value: boolean) => void }> = ({ collapsed, onCollapse }) => {
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
+  return (
+    <Sider
+      collapsed={collapsed}
+      onCollapse={onCollapse}
+      width={250}
+      style={{ background: colorBgContainer }}
+    >
+      <div style={{ textAlign: 'center', padding: '10px' }}>
+        {!collapsed && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column' }}>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/8/88/Silpakorn_University_Logo_02.png"
+              alt="Silpakorn University"
+              style={{ width: '130px', borderRadius: '8px', marginBottom: '10px' }}
+            />
+            <div style={{ alignSelf: 'flex-end' }}>
+              <LeftSquareOutlined onClick={() => onCollapse(true)} style={{ color: 'black', fontSize: '24px', cursor: 'pointer' }} />
+            </div>
+          </div>
+        )}
+        {collapsed && (
+          <RightSquareOutlined onClick={() => onCollapse(false)} style={{ color: 'black', fontSize: '24px', cursor: 'pointer' }} />
+        )}
+      </div>
+      <Menu mode="inline" defaultSelectedKeys={['1']} items={items2} />
+    </Sider>
+  );
+};
+
+// Second Layout component
+const SecondLayout: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-        trigger={null}
-        width={250}
-        style={{ background: colorBgContainer }}
+    <Layout style={{ padding: '0 24px 24px' }}>
+      <Content
+        style={{
+          padding: 24,
+          margin: 0,
+          minHeight: 280,
+          background: colorBgContainer,
+          borderRadius: borderRadiusLG,
+          backgroundColor: 'black',
+        }}
       >
-        <div style={{ padding: '10px', textAlign: 'right' }}>
-          {collapsed ? (
-            <RightSquareOutlined onClick={() => setCollapsed(false)} style={{ color: 'black', fontSize: '24px' }} />
-          ) : (
-            <LeftSquareOutlined onClick={() => setCollapsed(true)} style={{ color: 'black', fontSize: '24px' }} />
-          )}
-        </div>
+        Content
+      </Content>
+    </Layout>
+  );
+};
 
-        {!collapsed && (
-          <div style={{ textAlign: 'center', padding: '10px', marginTop: '-50px' }}>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/8/88/Silpakorn_University_Logo_02.png"
-              alt="Silpakorn University"
-              style={{ width: '100px', borderRadius: '8px', marginBottom: '10px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-            />
-          </div>
-        )}
+const App: React.FC = () => {
+  const [collapsed, setCollapsed] = useState(false);
 
-        <Menu
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          style={{ height: '100%', borderRight: 0 }}
-          items={items2}
-        />
-      </Sider>
-      <Layout style={{ padding: '0 24px 24px' }}>
-        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', backgroundColor: 'white' }}>
-          <div className="breadcrumb-container" style={{ display: 'flex', justifyContent: 'flex-end', margin: '14px 0' }}>
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      {/* First layout with menu sidebar */}
+      <FirstLayout collapsed={collapsed} onCollapse={setCollapsed} />
+
+      <Layout>
+        <div style={{ maxWidth: '100%', backgroundColor: 'white' }}>
+          <div className="breadcrumb-container" style={{ display: 'flex', justifyContent: 'flex-end', margin: '14px 0', padding: '0 16px' }}>
             <Breadcrumb
               items={[
                 { title: 'สมรัก ภักดี' },
-                { title: <><LogoutOutlined /></> },
+                { title: <LogoutOutlined /> },
               ]}
             />
           </div>
-          <h1 style={{ fontSize: '2rem', color: 'black' }}>จัดการผู้ใช้งาน</h1>
-          <Content
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-              backgroundColor: 'red',
-            }}
-          >
-            Content
-          </Content>
         </div>
+
+        <br />
+        <h1 style={{ fontSize: '25px', color: 'black', marginLeft: '40px' }}>จัดการผู้ใช้งาน (User Management)</h1>
+        <br />
+
+        {/* Second layout for content */}
+        <SecondLayout />
       </Layout>
     </Layout>
   );
