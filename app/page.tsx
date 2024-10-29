@@ -1,17 +1,20 @@
-"use client"; // Ensure this is the first line
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { CopyOutlined, FileDoneOutlined, ProductOutlined, LogoutOutlined, FileMarkdownOutlined, ContainerOutlined, DashboardOutlined } from '@ant-design/icons';
 import { LeftSquareOutlined, RightSquareOutlined, FileExclamationOutlined, ClusterOutlined, DollarOutlined, FieldTimeOutlined } from '@ant-design/icons';
 import { EnvironmentOutlined, DatabaseOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
-const { Content, Sider } = Layout;
+import { Breadcrumb, Layout, Menu, theme, Button, Form, Input, Select, Space } from 'antd';
 
+const { Content, Sider } = Layout;
+const { Option } = Select;
+
+// Updated menu items with proper icon handling
 const items2: MenuProps['items'] = [
   {
     key: '1',
-    icon: React.cloneElement(<ProductOutlined />, { style: { color: 'gray', fontSize: '15px' } }),
+    icon: <ProductOutlined style={{ color: 'gray', fontSize: '15px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>Dashboard</span>
   },
   {
@@ -28,27 +31,27 @@ const items2: MenuProps['items'] = [
   },
   {
     key: '2',
-    icon: React.cloneElement(<CopyOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <CopyOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>แผนกลยุทธ์</span>
   },
   {
     key: '3',
-    icon: React.cloneElement(<FileDoneOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <FileDoneOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>แผนปฎิบัติการ</span>
   },
   {
     key: '4',
-    icon: React.cloneElement(<FileExclamationOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <FileExclamationOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>แผนบริหารความเสี่ยง</span>
   },
   {
     key: '5',
-    icon: React.cloneElement(<FieldTimeOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <FieldTimeOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>ประเด็นเร่งด่วน</span>
   },
   {
     key: '6',
-    icon: React.cloneElement(<ClusterOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <ClusterOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>จุดเน้นคณะวิชา/ส่วนงาน</span>
   },
   {
@@ -65,12 +68,12 @@ const items2: MenuProps['items'] = [
   },
   {
     key: '7',
-    icon: React.cloneElement(<FileMarkdownOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <FileMarkdownOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>ประมาณร่ายรับ</span>
   },
   {
     key: '8',
-    icon: React.cloneElement(<DollarOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <DollarOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>การจัดทำรายจ่าย</span>
   },
   {
@@ -87,7 +90,7 @@ const items2: MenuProps['items'] = [
   },
   {
     key: '9',
-    icon: React.cloneElement(<ContainerOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <ContainerOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>รายงาน</span>
   },
   {
@@ -104,12 +107,12 @@ const items2: MenuProps['items'] = [
   },
   {
     key: '10',
-    icon: React.cloneElement(<EnvironmentOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <EnvironmentOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>ติดตามโครงการ</span>
   },
   {
     key: '11',
-    icon: React.cloneElement(<DashboardOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <DashboardOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>ติดตามตัวชี้วัด</span>
   },
   {
@@ -126,12 +129,12 @@ const items2: MenuProps['items'] = [
   },
   {
     key: '12',
-    icon: React.cloneElement(<DatabaseOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <DatabaseOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>ข้อมูลตั้งต้น</span>
   },
   {
     key: '13',
-    icon: React.cloneElement(<UserOutlined />, { style: { color: 'gray', fontSize: '17px' } }),
+    icon: <UserOutlined style={{ color: 'gray', fontSize: '17px' }} />,
     label: <span style={{ fontSize: '14px', color: '#adadad' }}>ตัวจัดสิทธิ์และผู้ใช้งาน</span>
   },
 ];
@@ -170,25 +173,98 @@ const FirstLayout: React.FC<{ collapsed: boolean; onCollapse: (value: boolean) =
   );
 };
 
-// Second Layout component
 const SecondLayout: React.FC = () => {
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: { colorBgContainer },
   } = theme.useToken();
 
+  const [form] = Form.useForm();
+
+  const onGenderChange = (value: string) => {
+    form.setFieldsValue({ note: '' });
+  };
+  const onFinish = (values: any) => {
+    console.log(values);
+  };
+
+  const onReset = () => {
+    form.resetFields();
+  };
+
   return (
-    <Layout style={{ padding: '0 24px 24px' }}>
+    <Layout style={{ padding: '0 6px 6px' }}>
       <Content
         style={{
-          padding: 24,
+          padding: 6,
           margin: 0,
-          minHeight: 280,
-          background: colorBgContainer,
-          borderRadius: borderRadiusLG,
-          backgroundColor: 'black',
+          minHeight: 60,
+          background: 'white',
+          borderRadius: 6,
         }}
       >
-        Content
+        <Form
+          form={form}
+          name="control-hooks"
+          onFinish={onFinish}
+          style={{
+            maxWidth: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+          }}
+        >
+          <Form.Item
+            name="note"
+            label="ชื่อ/นามสกุล/อีเมล"
+            rules={[{ required: true }]}
+            style={{ flex: 1, marginBottom: 0 }}
+          >
+            <Input size="middle" />
+          </Form.Item>
+
+          <Form.Item
+            name="faculty"
+            label="คณะ/หน่วยงาน"
+            rules={[{ required: true }]}
+            style={{ flex: 1, marginBottom: 0 }}
+          >
+            <Select
+              size="middle"
+              placeholder="ทั้งหมด"
+              onChange={onGenderChange}
+              allowClear
+            >
+              <Option value="BCA">BCA</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            name="status"
+            label="สถานะ"
+            rules={[{ required: true }]}
+            style={{ flex: 1, marginBottom: 0 }}
+          >
+            <Select
+              size="middle"
+              placeholder="ใช้งาน"
+              onChange={onGenderChange}
+              allowClear
+            >
+              <Option value="ดำเนินการ">ดำเนินการ</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item style={{ marginBottom: 0, marginLeft: 4 }}>
+            <Space size="small">
+              <Button size="middle" type="primary" htmlType="submit">
+                ค้นหา
+              </Button>
+              <Button size="middle" htmlType="button" onClick={onReset}>
+                ล้างข้อมูล
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
       </Content>
     </Layout>
   );
@@ -199,7 +275,6 @@ const App: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      {/* First layout with menu sidebar */}
       <FirstLayout collapsed={collapsed} onCollapse={setCollapsed} />
 
       <Layout>
@@ -218,7 +293,6 @@ const App: React.FC = () => {
         <h1 style={{ fontSize: '25px', color: 'black', marginLeft: '40px' }}>จัดการผู้ใช้งาน (User Management)</h1>
         <br />
 
-        {/* Second layout for content */}
         <SecondLayout />
       </Layout>
     </Layout>
