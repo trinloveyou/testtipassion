@@ -23,5 +23,12 @@ body {
 :where(.css-dev-only-do-not-override-ni1kz0).ant-layout-content {
   flex: unset !important;
   color: rgba(0, 0, 0, 0.88);
-  width: 85%;
+  width: 98%;
+  margin-left: 1%;
+  /* เพิ่มค่าพัดดิ้งทางซ้าย */
+}
+
+p {
+  padding-left: 20px;
+  font-size: 17px;
 }

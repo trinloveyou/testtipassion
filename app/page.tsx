@@ -1,188 +1,193 @@
 "use client";
 
 import React, { useState } from 'react';
-import { CopyOutlined, FileDoneOutlined, ProductOutlined, LogoutOutlined, FileMarkdownOutlined, ContainerOutlined, DashboardOutlined } from '@ant-design/icons';
-import { LeftSquareOutlined, RightSquareOutlined, FileExclamationOutlined, ClusterOutlined, DollarOutlined, FieldTimeOutlined } from '@ant-design/icons';
-import { EnvironmentOutlined, DatabaseOutlined, UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme, Button, Form, Input, Select, Space, Tag, Table } from 'antd';
+import {
+  CopyOutlined,
+  FileDoneOutlined,
+  ProductOutlined,
+  LogoutOutlined,
+  FileMarkdownOutlined,
+  ContainerOutlined,
+  DashboardOutlined,
+  LeftSquareOutlined,
+  RightSquareOutlined,
+  FileExclamationOutlined,
+  ClusterOutlined,
+  DollarOutlined,
+  FieldTimeOutlined,
+  EnvironmentOutlined,
+  DatabaseOutlined,
+  UserOutlined,
+  EditOutlined
+} from '@ant-design/icons';
+import { Breadcrumb, Layout, Menu, Button, Form, Input, Select, Space, Table, Tag } from 'antd';
+import { MenuItemType, ItemType } from 'rc-menu/lib/interface';
 
 const { Content, Sider } = Layout;
 const { Option } = Select;
 
-// Updated menu items with proper icon handling
-const items2: MenuProps['items'] = [
+
+const columns = [
   {
-    key: '1',
-    icon: <ProductOutlined style={{ color: 'gray', fontSize: '15px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>Dashboard</span>
+    title: 'Action',
+    dataIndex: 'action',
+    key: 'action',
+    render: () =>
+      <a>
+        <EditOutlined />
+      </a>
   },
   {
-    type: 'divider',
+    title: 'ลำดับ',
+    dataIndex: 'number',
+    key: 'number',
+    render: (text: any, record: any, index: number) => index + 1, // Auto-generate row number
   },
   {
-    key: 'planning',
-    label: (
-      <span style={{ fontSize: '10px', color: '#000000', textAlign: 'left' }}>
-        Planning
-      </span>
+    title: 'ชื่อนามสกุล',
+    dataIndex: 'name',
+    key: 'name',
+    render: (text: any) => <a>{text}</a>,
+  },
+  {
+    title: 'อีเมล',
+    dataIndex: 'email',
+    key: 'email',
+  },
+  {
+    title: 'คณะ/หน่วยงาน',
+    dataIndex: 'group',
+    key: 'group',
+  },
+  {
+    title: 'เบอร์โทร',
+    dataIndex: 'numberphone',
+    key: 'numberphone',
+  },
+  {
+    title: 'สถานะ',
+    dataIndex: 'tags',
+    key: 'status',
+    render: (tags: any) => (
+      <>
+        {tags.map((tag: any) => {
+          let color;
+          if (tag === 'ใช้งาน') {
+            color = 'green'; // Set green for "ใช้งาน"
+          } else if (tag === 'ไม่ใช้งาน') {
+            color = 'red'; // Set volcano color for "ไม่ใช้งาน"
+          }
+          return (
+            <Tag color={color} key={tag}>
+              {tag.toUpperCase()}
+            </Tag>
+          );
+        })}
+      </>
     ),
-    disabled: true,
-  },
-  {
-    key: '2',
-    icon: <CopyOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>แผนกลยุทธ์</span>
-  },
-  {
-    key: '3',
-    icon: <FileDoneOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>แผนปฎิบัติการ</span>
-  },
-  {
-    key: '4',
-    icon: <FileExclamationOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>แผนบริหารความเสี่ยง</span>
-  },
-  {
-    key: '5',
-    icon: <FieldTimeOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ประเด็นเร่งด่วน</span>
-  },
-  {
-    key: '6',
-    icon: <ClusterOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>จุดเน้นคณะวิชา/ส่วนงาน</span>
-  },
-  {
-    type: 'divider',
-  },
-  {
-    key: 'Budgeting',
-    label: (
-      <span style={{ fontSize: '10px', color: '#000000', textAlign: 'left' }}>
-        Budgeting
-      </span>
-    ),
-    disabled: true,
-  },
-  {
-    key: '7',
-    icon: <FileMarkdownOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ประมาณร่ายรับ</span>
-  },
-  {
-    key: '8',
-    icon: <DollarOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>การจัดทำรายจ่าย</span>
-  },
-  {
-    type: 'divider',
-  },
-  {
-    key: 'Report',
-    label: (
-      <span style={{ fontSize: '10px', color: '#000000', textAlign: 'left' }}>
-        Report
-      </span>
-    ),
-    disabled: true,
-  },
-  {
-    key: '9',
-    icon: <ContainerOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>รายงาน</span>
-  },
-  {
-    type: 'divider',
-  },
-  {
-    key: 'Tracking',
-    label: (
-      <span style={{ fontSize: '10px', color: '#000000', textAlign: 'left' }}>
-        Tracking
-      </span>
-    ),
-    disabled: true,
-  },
-  {
-    key: '10',
-    icon: <EnvironmentOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ติดตามโครงการ</span>
-  },
-  {
-    key: '11',
-    icon: <DashboardOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ติดตามตัวชี้วัด</span>
-  },
-  {
-    type: 'divider',
-  },
-  {
-    key: 'Management',
-    label: (
-      <span style={{ fontSize: '10px', color: '#000000', textAlign: 'left' }}>
-        Management
-      </span>
-    ),
-    disabled: true,
-  },
-  {
-    key: '12',
-    icon: <DatabaseOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ข้อมูลตั้งต้น</span>
-  },
-  {
-    key: '13',
-    icon: <UserOutlined style={{ color: 'gray', fontSize: '17px' }} />,
-    label: <span style={{ fontSize: '14px', color: '#adadad' }}>ตัวจัดสิทธิ์และผู้ใช้งาน</span>
   },
 ];
 
-const FirstLayout: React.FC<{ collapsed: boolean; onCollapse: (value: boolean) => void }> = ({ collapsed, onCollapse }) => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+const data = [
+  {
+    key: '1',
+    name: 'นพดล ศรีสุข',
+    email: 'indy@432.com',
+    group: 'กองแผนงาน',
+    numberphone: '123',
+    tags: ['ใช้งาน'],
+  },
+  {
+    key: '2',
+    name: 'สมชาย สุขใจ',
+    email: 'indy@432.com',
+    group: 'กองแผนงาน',
+    numberphone: '989',
+    tags: ['ไม่ใช้งาน'],
+  },
+  {
+    key: '3',
+    name: 'สุนีย์ จันทร์ฉาย',
+    email: 'indy@432.com',
+    group: 'กองแผนงาน',
+    numberphone: '5555',
+    tags: ['ไม่ใช้งาน'],
+  },
+  {
+    key: '4',
+    name: 'กิตติ พูลผล',
+    email: 'indy@432.com',
+    group: 'กองแผนงาน',
+    numberphone: '666',
+    tags: ['ใช้งาน'],
+  },
+  {
+    key: '5',
+    name: 'พรทิพย์ พัฒนชัย',
+    email: 'indy@432.com',
+    group: 'กองแผนงาน',
+    numberphone: '777',
+    tags: ['ใช้งาน'],
+  },
+  {
+    key: '6',
+    name: 'สุขใจ ขวัญเจริญ',
+    email: 'indy@432.com',
+    group: 'กองแผนงาน',
+    numberphone: '888',
+    tags: ['ใช้งาน'],
+  },
+];
 
-  return (
-    <Sider
-      collapsed={collapsed}
-      onCollapse={onCollapse}
-      width={250}
-      style={{ background: colorBgContainer }}
-    >
-      <div style={{ textAlign: 'center', padding: '10px' }}>
-        {!collapsed && (
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column' }}>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/8/88/Silpakorn_University_Logo_02.png"
-              alt="Silpakorn University"
-              style={{ width: '130px', borderRadius: '8px', marginBottom: '10px' }}
-            />
-            <div style={{ alignSelf: 'flex-end' }}>
-              <LeftSquareOutlined onClick={() => onCollapse(true)} style={{ color: 'black', fontSize: '24px', cursor: 'pointer' }} />
-            </div>
-          </div>
-        )}
-        {collapsed && (
-          <RightSquareOutlined onClick={() => onCollapse(false)} style={{ color: 'black', fontSize: '24px', cursor: 'pointer' }} />
-        )}
-      </div>
-      <Menu mode="inline" defaultSelectedKeys={['1']} items={items2} />
-    </Sider>
-  );
-};
+const menuItems = [
+  { key: '1', icon: <ProductOutlined />, label: 'Dashboard' },
+  { type: 'divider' },
+  { key: 'planning', label: 'Planning', disabled: true },
+  { key: '2', icon: <CopyOutlined />, label: 'แผนกลยุทธ์' },
+  { key: '3', icon: <FileDoneOutlined />, label: 'แผนปฎิบัติการ' },
+  { key: '4', icon: <FileExclamationOutlined />, label: 'แผนบริหารความเสี่ยง' },
+  { key: '5', icon: <FieldTimeOutlined />, label: 'ประเด็นเร่งด่วน' },
+  { key: '6', icon: <ClusterOutlined />, label: 'จุดเน้นคณะวิชา/ส่วนงาน' },
+  { type: 'divider' },
+  { key: 'Budgeting', label: 'Budgeting', disabled: true },
+  { key: '7', icon: <FileMarkdownOutlined />, label: 'ประมาณรายรับ' },
+  { key: '8', icon: <DollarOutlined />, label: 'การจัดทำรายจ่าย' },
+  { type: 'divider' },
+  { key: 'Report', label: 'Report', disabled: true },
+  { key: '9', icon: <ContainerOutlined />, label: 'รายงาน' },
+  { type: 'divider' },
+  { key: 'Tracking', label: 'Tracking', disabled: true },
+  { key: '10', icon: <EnvironmentOutlined />, label: 'ติดตามโครงการ' },
+  { key: '11', icon: <DashboardOutlined />, label: 'ติดตามตัวชี้วัด' },
+  { type: 'divider' },
+  { key: 'Management', label: 'Management', disabled: true },
+  { key: '12', icon: <DatabaseOutlined />, label: 'ข้อมูลตั้งต้น' },
+  { key: '13', icon: <UserOutlined />, label: 'ตัวจัดสิทธิ์และผู้ใช้งาน' },
+];
 
-const SecondLayout: React.FC = () => {
-  const {
-    token: { },
-  } = theme.useToken();
+const FirstLayout = ({ collapsed, onCollapse }: { collapsed: boolean, onCollapse: (collapsed: boolean) => void }) => (
+  <Sider collapsed={collapsed} onCollapse={onCollapse} width={250}>
+    <div style={{ textAlign: 'center', padding: '10px' }}>
+      {!collapsed ? (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column' }}>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/8/88/Silpakorn_University_Logo_02.png"
+            alt="Silpakorn University"
+            style={{ width: '130px', borderRadius: '8px', marginBottom: '10px', backgroundColor: 'white' }}
+          />
+          <LeftSquareOutlined onClick={() => onCollapse(true)} style={{ fontSize: '24px', cursor: 'pointer' }} />
+        </div>
+      ) : (
+        <RightSquareOutlined onClick={() => onCollapse(false)} style={{ fontSize: '24px', cursor: 'pointer' }} />
+      )}
+    </div>
+    <Menu mode="inline" defaultSelectedKeys={['1']} items={menuItems as ItemType<MenuItemType>[]} />
+  </Sider>
+);
 
+const SecondLayout = () => {
   const [form] = Form.useForm();
 
-  const onGenderChange = (value: string) => {
-    form.setFieldsValue({ note: '' });
-  };
   const onFinish = (values: any) => {
     console.log(values);
   };
@@ -193,18 +198,102 @@ const SecondLayout: React.FC = () => {
 
   return (
     <Layout style={{ padding: '0 6px 6px' }}>
-      <Content
-        style={{
-          padding: 6,
-          margin: 0,
-          minHeight: 60,
-          background: 'white',
-          borderRadius: 6,
-        }}
-      >
-        {/* Breadcrumb and Title Section */}
-        <div style={{ maxWidth: '100%', backgroundColor: 'white' }}>
-          <div className="breadcrumb-container" style={{ display: 'flex', justifyContent: 'flex-end', margin: '14px 0', padding: '0 16px' }}>
+      <Content style={{ padding: 6, background: 'white', borderRadius: 6 }}>
+        <p>ค้นหา</p>
+        <br></br>
+        <Form
+          form={form}
+          name="control-hooks"
+          onFinish={onFinish}
+          layout="inline"
+          style={{ display: 'flex', gap: '12px' }}
+        >
+          <Form.Item name="note" rules={[{ required: true }]}>
+            <span>ชื่อ/นามสกุล/อีเมล</span>
+            <Input size="middle" />
+          </Form.Item>
+          <Form.Item name="faculty" rules={[{ required: true }]} style={{ marginBottom: '10px' }} >
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <label style={{ marginBottom: '4px' }}>คณะ/หน่วยงาน</label>
+              <Select
+                size="middle"
+                placeholder="ทั้งหมด"
+                allowClear
+                style={{ width: '250px', marginTop: '-4px' }} // ปรับความกว้างตามต้องการ
+              >
+                <Option value="BCA">BCA</Option>
+              </Select>
+            </div>
+          </Form.Item>
+          <Form.Item name="status" rules={[{ required: true }]} style={{ marginBottom: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <label style={{ marginBottom: '4px' }}>สถานะ</label>
+              <Select
+                size="middle"
+                placeholder="ใช้งาน"
+                allowClear
+                style={{ width: '250px', marginTop: '-4px' }} // ปรับ marginTop ที่นี่
+              >
+                <Option value="ดำเนินการ">ดำเนินการ</Option>
+              </Select>
+            </div>
+          </Form.Item>
+
+
+          <Space>
+            <div style={{ display: 'flex', gap: '16px', marginTop: '10px' }}> {/* ปรับค่า marginTop ตามต้องการ */}
+              <Button
+                size="middle"
+                type="primary"
+                htmlType="submit"
+                style={{ flex: 1, width: '120px' }}
+              >
+                ค้นหา
+              </Button>
+              <Button
+                size="middle"
+                htmlType="button"
+                onClick={onReset}
+                style={{ flex: 1, width: '120px' }}
+              >
+                ล้างข้อมูล
+              </Button>
+            </div>
+
+
+
+
+
+          </Space>
+        </Form>
+      </Content>
+    </Layout >
+  );
+};
+
+const ThirdLayout = () => (
+  <Layout style={{ padding: '0 6px 6px' }}>
+    <Content style={{ padding: 6, background: 'white', borderRadius: 6 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2 style={{ fontSize: '20px', margin: '20px 0' }}>รายการจัดการผู้ใช้งาน</h2>
+        <Button type="primary" style={{ backgroundColor: 'green', borderColor: 'green' }}>+ เพิ่มผู้ใช้งาน</Button>
+      </div>
+      <div style={{ padding: '10px', background: '#f5f5f5', borderRadius: '4px' }}>
+        <Table columns={columns} dataSource={data} />
+      </div>
+    </Content>
+  </Layout>
+);
+
+const App = () => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <FirstLayout collapsed={collapsed} onCollapse={setCollapsed} />
+      <Layout>
+        <div style={{ backgroundColor: 'white' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '14px 0', padding: '0 16px' }}>
             <Breadcrumb
               items={[
                 { title: 'สมรัก ภักดี' },
@@ -213,153 +302,14 @@ const SecondLayout: React.FC = () => {
             />
           </div>
         </div>
-
-        <br />
-        <h1 style={{ fontSize: '25px', color: 'black', marginLeft: '40px' }}>จัดการผู้ใช้งาน (User Management)</h1>
-        <br />
-
-        <Form
-          form={form}
-          name="control-hooks"
-          onFinish={onFinish}
-          style={{
-            maxWidth: '100%',
-            display: 'flex',
-            alignItems: 'flex-start',
-            padding: '0 16px',
-            marginBottom: '20px',
-          }}
-        >
-          <Form.Item
-            name="username"
-            style={{ width: '100%', marginRight: '10px' }}
-          >
-            <Input placeholder="ชื่อผู้ใช้งาน" />
-          </Form.Item>
-
-          <Form.Item
-            name="email"
-            style={{ width: '100%', marginRight: '10px' }}
-          >
-            <Input placeholder="อีเมล" />
-          </Form.Item>
-
-          <Form.Item
-            name="role"
-            style={{ width: '100%', marginRight: '10px' }}
-          >
-            <Select
-              placeholder="เลือกบทบาท"
-              onChange={onGenderChange}
-            >
-              <Option value="admin">Admin</Option>
-              <Option value="user">User</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit" size="middle">
-              ค้นหา
-            </Button>
-            <Button htmlType="button" onClick={onReset} size="middle" style={{ marginLeft: '8px' }}>
-              ล้าง
-            </Button>
-          </Form.Item>
-        </Form>
-
-        {/* Table Data Section */}
-        <div style={{ marginTop: '20px' }}>
-          <Table
-            bordered
-            dataSource={[
-              {
-                key: '1',
-                name: 'John Brown',
-                email: 'john.brown@example.com',
-                role: 'User',
-                status: 'Active',
-                registrationDate: '2022-01-01',
-                actions: 'Edit/Delete'
-              },
-              {
-                key: '2',
-                name: 'Jim Green',
-                email: 'jim.green@example.com',
-                role: 'Admin',
-                status: 'Inactive',
-                registrationDate: '2021-01-01',
-                actions: 'Edit/Delete'
-              },
-              {
-                key: '3',
-                name: 'Joe Black',
-                email: 'joe.black@example.com',
-                role: 'User',
-                status: 'Active',
-                registrationDate: '2023-01-01',
-                actions: 'Edit/Delete'
-              },
-            ]}
-            columns={[
-              {
-                title: 'Name',
-                dataIndex: 'name',
-                key: 'name',
-              },
-              {
-                title: 'Email',
-                dataIndex: 'email',
-                key: 'email',
-              },
-              {
-                title: 'Role',
-                dataIndex: 'role',
-                key: 'role',
-              },
-              {
-                title: 'Status',
-                dataIndex: 'status',
-                key: 'status',
-                render: (status: string) => (
-                  <Tag color={status === 'Active' ? 'green' : 'volcano'}>
-                    {status}
-                  </Tag>
-                ),
-              },
-              {
-                title: 'Registration Date',
-                dataIndex: 'registrationDate',
-                key: 'registrationDate',
-              },
-              {
-                title: 'Actions',
-                dataIndex: 'actions',
-                key: 'actions',
-                render: () => (
-                  <Space size="middle">
-                    <a>Edit</a>
-                    <a>Delete</a>
-                  </Space>
-                ),
-              },
-            ]}
-            pagination={false}
-          />
-        </div>
-      </Content>
+        <br></br>
+        <h1 style={{ fontSize: '24px', color: 'black', marginLeft: '14px' }}>จัดการผู้ใช้งาน (User Management)</h1>
+        <br></br>
+        <SecondLayout />
+        <ThirdLayout />
+      </Layout>
     </Layout>
   );
 };
 
-const MyLayout: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
-
-  return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <FirstLayout collapsed={collapsed} onCollapse={setCollapsed} />
-      <SecondLayout />
-    </Layout>
-  );
-};
-
-export default MyLayout;
+export default App;
