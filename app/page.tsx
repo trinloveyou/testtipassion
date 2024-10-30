@@ -18,30 +18,45 @@ import {
   EnvironmentOutlined,
   DatabaseOutlined,
   UserOutlined,
-  EditOutlined
+  EditOutlined,
+  SearchOutlined,
+  ClearOutlined,
+  DownOutlined,
+  UpOutlined
 } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, Button, Form, Input, Select, Space, Table, Tag } from 'antd';
+import {
+  Breadcrumb,
+  Layout,
+  Menu,
+  Button,
+  Form,
+  Input,
+  Select,
+  Space,
+  Table,
+  Tag,
+  Pagination,
+  Collapse
+} from 'antd';
 import { MenuItemType, ItemType } from 'rc-menu/lib/interface';
 
 const { Content, Sider } = Layout;
 const { Option } = Select;
+const { Panel } = Collapse;
 
-
+// Table columns configuration
 const columns = [
   {
     title: 'Action',
     dataIndex: 'action',
     key: 'action',
-    render: () =>
-      <a>
-        <EditOutlined />
-      </a>
+    render: () => <a><EditOutlined /></a>
   },
   {
     title: 'ลำดับ',
     dataIndex: 'number',
     key: 'number',
-    render: (text: any, record: any, index: number) => index + 1, // Auto-generate row number
+    render: (text: any, record: any, index: number) => index + 1,
   },
   {
     title: 'ชื่อนามสกุล',
@@ -71,12 +86,7 @@ const columns = [
     render: (tags: any) => (
       <>
         {tags.map((tag: any) => {
-          let color;
-          if (tag === 'ใช้งาน') {
-            color = 'green'; // Set green for "ใช้งาน"
-          } else if (tag === 'ไม่ใช้งาน') {
-            color = 'red'; // Set volcano color for "ไม่ใช้งาน"
-          }
+          let color = tag === 'ใช้งาน' ? 'green' : 'red';
           return (
             <Tag color={color} key={tag}>
               {tag.toUpperCase()}
@@ -88,6 +98,7 @@ const columns = [
   },
 ];
 
+// Sample data
 const data = [
   {
     key: '1',
@@ -139,6 +150,7 @@ const data = [
   },
 ];
 
+// Menu items configuration
 const menuItems = [
   { key: '1', icon: <ProductOutlined />, label: 'Dashboard' },
   { type: 'divider' },
@@ -165,6 +177,7 @@ const menuItems = [
   { key: '13', icon: <UserOutlined />, label: 'ตัวจัดสิทธิ์และผู้ใช้งาน' },
 ];
 
+// FirstLayout Component
 const FirstLayout = ({ collapsed, onCollapse }: { collapsed: boolean, onCollapse: (collapsed: boolean) => void }) => (
   <Sider collapsed={collapsed} onCollapse={onCollapse} width={250}>
     <div style={{ textAlign: 'center', padding: '10px' }}>
@@ -185,8 +198,10 @@ const FirstLayout = ({ collapsed, onCollapse }: { collapsed: boolean, onCollapse
   </Sider>
 );
 
+// SecondLayout Component (Search Form)
 const SecondLayout = () => {
   const [form] = Form.useForm();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const onFinish = (values: any) => {
     console.log(values);
@@ -199,73 +214,90 @@ const SecondLayout = () => {
   return (
     <Layout style={{ padding: '0 6px 6px' }}>
       <Content style={{ padding: 6, background: 'white', borderRadius: 6 }}>
-        <p>ค้นหา</p>
-        <br></br>
-        <Form
-          form={form}
-          name="control-hooks"
-          onFinish={onFinish}
-          layout="inline"
-          style={{ display: 'flex', gap: '12px' }}
+        <Collapse
+          defaultActiveKey={['1']}
+          className="bg-white"
+          expandIcon={({ isActive }) =>
+            isActive ? <UpOutlined /> : <DownOutlined />
+          }
         >
-          <Form.Item name="note" rules={[{ required: true }]}>
-            <span>ชื่อ/นามสกุล/อีเมล</span>
-            <Input size="middle" />
-          </Form.Item>
-          <Form.Item name="faculty" rules={[{ required: true }]} style={{ marginBottom: '10px' }} >
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <label style={{ marginBottom: '4px' }}>คณะ/หน่วยงาน</label>
-              <Select
-                size="middle"
-                placeholder="ทั้งหมด"
-                allowClear
-                style={{ width: '250px', marginTop: '-4px' }} // ปรับความกว้างตามต้องการ
-              >
-                <Option value="BCA">BCA</Option>
-              </Select>
-            </div>
-          </Form.Item>
-          <Form.Item name="status" rules={[{ required: true }]} style={{ marginBottom: '10px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <label style={{ marginBottom: '4px' }}>สถานะ</label>
-              <Select
-                size="middle"
-                placeholder="ใช้งาน"
-                allowClear
-                style={{ width: '250px', marginTop: '-4px' }} // ปรับ marginTop ที่นี่
-              >
-                <Option value="ดำเนินการ">ดำเนินการ</Option>
-              </Select>
-            </div>
-          </Form.Item>
+          <Panel
+            header="ค้นหา"
+            key="1"
+          >
+            <Form
+              form={form}
+              name="control-hooks"
+              onFinish={onFinish}
+              layout="inline"
+              style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}
+            >
+              <Form.Item name="note" rules={[{ required: true }]}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ marginBottom: '4px' }}>ชื่อ/นามสกุล/อีเมล</label>
+                  <Input size="middle" style={{ width: '250px' }} />
+                </div>
+              </Form.Item>
 
+              <Form.Item name="faculty" rules={[{ required: true }]}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ marginBottom: '4px' }}>คณะ/หน่วยงาน</label>
+                  <Select
+                    size="middle"
+                    placeholder="ทั้งหมด"
+                    allowClear
+                    style={{ width: '250px' }}
+                  >
+                    <Option value="BCA">BCA</Option>
+                  </Select>
+                </div>
+              </Form.Item>
 
-          <Space>
-            <div style={{ display: 'flex', gap: '16px', marginTop: '10px' }}> {/* ปรับค่า marginTop ตามต้องการ */}
-              <Button
-                size="middle"
-                type="primary"
-                htmlType="submit"
-                style={{ flex: 1, width: '120px', backgroundColor: 'green', borderColor: 'green' }}
-              >
-                ค้นหา
-              </Button>
-              <Button
-                size="middle"
-                htmlType="button"
-                onClick={onReset}
-                style={{ flex: 1, width: '120px', color: 'green' }}
-              >
-                ล้างข้อมูล
-              </Button>
-            </div>
-          </Space>
-        </Form>
+              <Form.Item name="status" rules={[{ required: true }]}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ marginBottom: '4px' }}>สถานะ</label>
+                  <Select
+                    size="middle"
+                    placeholder="ใช้งาน"
+                    allowClear
+                    style={{ width: '250px' }}
+                  >
+                    <Option value="ดำเนินการ">ดำเนินการ</Option>
+                  </Select>
+                </div>
+              </Form.Item>
+
+              <Form.Item>
+                <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
+                  <Button
+                    size="middle"
+                    type="primary"
+                    htmlType="submit"
+                    icon={<SearchOutlined />}
+                    style={{ width: '120px', backgroundColor: 'green', borderColor: 'green' }}
+                  >
+                    ค้นหา
+                  </Button>
+                  <Button
+                    size="middle"
+                    htmlType="button"
+                    onClick={onReset}
+                    icon={<ClearOutlined />}
+                    style={{ width: '120px', color: 'green' }}
+                  >
+                    ล้างข้อมูล
+                  </Button>
+                </div>
+              </Form.Item>
+            </Form>
+          </Panel>
+        </Collapse>
       </Content>
-    </Layout >
+    </Layout>
   );
 };
 
+// ThirdLayout Component
 const ThirdLayout = () => (
   <Layout style={{ padding: '0 6px 6px' }}>
     <Content style={{ padding: 6, background: 'white', borderRadius: 6 }}>
@@ -274,12 +306,41 @@ const ThirdLayout = () => (
         <Button type="primary" style={{ backgroundColor: 'green', borderColor: 'green' }}>+ เพิ่มผู้ใช้งาน</Button>
       </div>
       <div style={{ padding: '10px', background: '#f5f5f5', borderRadius: '4px' }}>
-        <Table columns={columns} dataSource={data} />
+        {/* Content */}
+      </div>
+      <Table columns={columns} dataSource={data} />
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: '16px'
+      }}>
+        <Select
+          defaultValue="1"
+          style={{ width: 120 }}
+          options={[
+            { value: '1', label: '1 / page' },
+            { value: '2', label: '2 / page' },
+            { value: '3', label: '3 / page' },
+            { value: '4', label: '4 / page' },
+            { value: '5', label: '5 / page' },
+            { value: '6', label: '6 / page' },
+          ]}
+        />
+        <div style={{ display: 'flex', gap: '8px', marginLeft: '8px' }}>
+          <span>1-6 of 6 items</span>
+        </div>
+        <Pagination
+          showSizeChanger={false}
+          defaultCurrent={6}
+          style={{ margin: 0 }}
+        />
+
       </div>
     </Content>
   </Layout>
 );
 
+// Main App Component
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -297,9 +358,9 @@ const App = () => {
             />
           </div>
         </div>
-        <br></br>
+        <br />
         <h1 style={{ fontSize: '24px', color: 'black', marginLeft: '14px' }}>จัดการผู้ใช้งาน (User Management)</h1>
-        <br></br>
+        <br />
         <SecondLayout />
         <ThirdLayout />
       </Layout>
