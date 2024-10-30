@@ -39,7 +39,7 @@ import {
   Switch,
 } from 'antd';
 import { Row, Col } from 'antd';
-
+import './page.css';
 
 const onChange = (checked: boolean) => {
   console.log(`switch to ${checked ? "ใช้งาน" : "ไม่ใช้งาน"}`);
@@ -313,57 +313,59 @@ const ThirdLayout: React.FC<{
         title="เพิ่มผู้ใช้งาน"
         open={isModalOpen}
         onCancel={handleCancel}
-        width={800} // Adjust the width as needed
-        footer={null} // Remove default footer
-        style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', position: 'absolute' }} // Center the modal
+        width={800}
+        footer={null}
+        style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', position: 'absolute' }}
+        className="custom-modal"
+
       >
         <Form layout="vertical">
           <Row gutter={16}>
             <Col span={8}>
-              <Form.Item label="อีเมล" required>
+              <Form.Item label={<>อีเมล <span className="text-red-500">*</span></>}>
                 <Select placeholder="">
                   <Option value="triowjf@fdks.com">triowjf@fdks.com</Option>
                 </Select>
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="ชื่อ" required>
+              <Form.Item label={<>ชื่อ <span className="text-red-500">*</span></>}>
                 <Input />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="นามสกุล" required>
+              <Form.Item label={<>นามสกุล <span className="text-red-500">*</span></>}>
                 <Input />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="คณะ/หน่วยงาน" required>
+              <Form.Item label={<>คณะ/หน่วยงาน <span className="text-red-500">*</span></>}>
                 <Select placeholder="">
                   <Option value="กองแผนงาน">กองแผนงาน</Option>
                 </Select>
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="ตำแหน่ง" required>
+              <Form.Item label={<>ตำแหน่ง <span className="text-red-500">*</span></>}>
                 <Select placeholder="">
                   <Option value="ไม่มี">ไม่มี</Option>
                 </Select>
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="เบอร์โทร" required>
+              <Form.Item label={<>เบอร์โทร <span className="text-red-500">*</span></>}>
                 <Input />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="สิทธิ์ผู้ใช้งาน" required>
+              <Form.Item label={<>สิทธิ์ผู้ใช้งาน <span className="text-red-500">*</span></>}>
                 <Select placeholder="">
                   <Option value="แอดมิน">แอดมิน</Option>
                 </Select>
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="สถานะ" required>
+              <Form.Item label={<>สถานะ <span className="text-red-500">*</span></>}>
                 <Switch defaultChecked onChange={onChange} />
               </Form.Item>
             </Col>
@@ -371,10 +373,10 @@ const ThirdLayout: React.FC<{
           <Row justify="center" style={{ marginTop: '16px' }}>
             <Col>
               <Button type="primary" onClick={handleOk}>
-                OK
+                บันทึก
               </Button>
               <Button style={{ marginLeft: '8px' }} onClick={handleCancel}>
-                Cancel
+                ยกเลิก
               </Button>
             </Col>
           </Row>

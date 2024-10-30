@@ -9,3 +9,32 @@ body {
 #root {
     height: 100%;
 }
+
+.custom-modal .ant-modal-header {
+    background-color: #4e4d4d;
+    padding: 12px 30px;
+    border-top-left-radius: 8px;
+    /* เพิ่มมุมโค้งด้านบนซ้าย */
+    border-top-right-radius: 8px;
+    /* เพิ่มมุมโค้งด้านบนขวา */
+    margin: -20px -24px 24px -24px;
+    /* ขยายให้เต็มความกว้าง Modal */
+}
+
+.custom-modal .ant-modal-title {
+    color: white !important;
+    margin: 0;
+}
+
+.custom-modal .ant-modal-close {
+    color: white;
+    /* เปลี่ยนสีปุ่มปิดเป็นสีขาวเพื่อให้เห็นชัดบนพื้นหลังสีเข้ม */
+    top: 12px;
+    /* ปรับตำแหน่งปุ่มปิด */
+    right: 20px;
+}
+
+.custom-modal .ant-modal-content {
+    padding-top: 20px;
+    /* เพิ่ม padding ด้านบนของเนื้อหา */
+}
